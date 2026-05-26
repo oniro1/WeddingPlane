@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Wedding Plane – Wedding & Event Planner di lusso. Matrimoni, proposte romantiche, business events, party a tema."/>
+  <title>Wedding Plane – Wedding & Event Planner</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=Great+Vibes&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+  /* =============================================
+     VARIABLES & RESET
+  ============================================= */
+  :root{
+    --ivory:      #FFFCF8;
+    --cream:      #FBF5EE;
+    --petal:      #FDF0EB;
+    --blush:      #F2D5C8;
+    --blush-mid:  #DEBCB0;
+    --rose:       #C47B78;
+    --rose-dk:    #8C4C4C;
+    --rose-vdk:   #5C2D2D;
+    --sage:       #8FA892;
+    --mauve:      #B9929A;
+    --charcoal:   #2A1A1A;
+    --gray:       #7A6A6E;
+
+    --serif:  'Cormorant Garamond', Georgia, serif;
+    --sans:   'Jost', sans-serif;
+    --script: 'Great Vibes', cursive;
+
+    --ease: cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;font-size:16px;}
+  body{
+    background:var(--ivory);
+    color:var(--charcoal);
+    font-family:var(--sans);
+    font-weight:300;
+    overflow-x:hidden;
+    line-height:1.75;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='24' viewBox='0 0 20 24'%3E%3Cpath d='M0 0 L0 20 L5 15 L8.5 23 L11 22 L7.5 14 L13.5 14 Z' fill='%23C47B78' stroke='%23fff' stroke-width='1.2' stroke-linejoin='round'/%3E%3C/svg%3E") 0 0, auto;
+  }
+  img{display:block;max-width:100%;height:auto;}
+  a{text-decoration:none;color:inherit;}
+  ul{list-style:none;}
+  ::-webkit-scrollbar{width:3px;}
+  ::-webkit-scrollbar-track{background:var(--petal);}
+  ::-webkit-scrollbar-thumb{background:var(--rose);border-radius:2px;}
+
+  /* =============================================
+     CUSTOM CURSOR
+  ============================================= */
+  /* ─── CURSORE STANDARD ROSA ─── */
+  /* nessun elemento custom — usa freccia di sistema colorata rosa */
+
+  /* =============================================
+     LOADER
+  ============================================= */
+  #loader{
+    position:fixed;inset:0;z-index:9999;
+    background:var(--petal);
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:1rem;
+    overflow:hidden;
+  }
+  .ldr-petals{position:absolute;inset:0;pointer-events:none;}
+  .ldr-p{
+    position:absolute;
+    border-radius:50% 0 50% 0;
+    background:var(--blush);
+    opacity:0;
+    animation:ldrPetal 3s ease-in-out infinite;
+  }
+  .ldr-p:nth-child(1){width:16px;height:26px;top:12%;left:18%;animation-delay:0s;}
+  .ldr-p:nth-child(2){width:11px;height:18px;top:22%;left:78%;animation-delay:.5s;}
+  .ldr-p:nth-child(3){width:19px;height:30px;top:68%;left:28%;animation-delay:.9s;}
+  .ldr-p:nth-child(4){width:13px;height:21px;top:75%;left:68%;animation-delay:1.3s;}
+  .ldr-p:nth-child(5){width:9px; height:15px;top:45%;left:90%;animation-delay:.6s;}
+  @keyframes ldrPetal{
+    0%{opacity:0;transform:translateY(0) rotate(0deg);}
+    30%{opacity:.55;}
+    100%{opacity:0;transform:translateY(-70px) rotate(50deg);}
+  }
+  .ldr-ornament{font-size:1.1rem;color:var(--blush-mid);letter-spacing:.5em;opacity:0;}
+  .ldr-logo{
+    font-family:var(--script);font-size:clamp(2.4rem,6vw,4rem);
+    color:var(--rose);opacity:0;transform:translateY(18px);
+  }
+  .ldr-sub{
+    font-family:var(--sans);font-size:.58rem;letter-spacing:.42em;
+    text-transform:uppercase;color:var(--gray);opacity:0;
+  }
+  .ldr-bar{width:0;height:1px;background:linear-gradient(to right,var(--blush),var(--rose),var(--blush));}
+
+  /* =============================================
+     NAVBAR
+  ============================================= */
+  #nav{
+    position:fixed;top:0;left:0;width:100%;z-index:1000;
+    padding:1.6rem 5%;
+    display:flex;align-items:center;justify-content:space-between;
+    transition:background .5s var(--ease),padding .5s var(--ease);
+  }
+  #nav.scrolled{
+    background:rgba(255,252,248,.93);
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    padding:1rem 5%;
+    box-shadow:0 1px 28px rgba(196,123,120,.1);
+  }
+  .nav-logo{
+    font-family:var(--script);font-size:2rem;
+    color:var(--ivory);transition:color .5s var(--ease);
+  }
+  #nav.scrolled .nav-logo{color:var(--rose-dk);}
+  .nav-links{display:flex;gap:2.5rem;align-items:center;}
+  .nav-links a{
+    font-family:var(--sans);font-size:.62rem;font-weight:400;
+    letter-spacing:.2em;text-transform:uppercase;
+    color:rgba(255,252,248,.8);position:relative;
+    transition:color .4s;
+  }
+  #nav.scrolled .nav-links a{color:var(--gray);}
+  .nav-links a::after{
+    content:'';position:absolute;bottom:-3px;left:0;
+    width:0;height:1px;background:var(--rose);
+    transition:width .4s var(--ease);
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-links a:hover{color:var(--rose)!important;}
+  .nav-cta{
+    color:var(--rose)!important;border:1px solid var(--rose)!important;
+    padding:.5rem 1.4rem!important;
+    transition:background .4s,color .4s!important;
+  }
+  .nav-cta::after{display:none!important;}
+  .nav-cta:hover{background:var(--rose)!important;color:var(--ivory)!important;}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:none;background:none;border:none;padding:0;z-index:1001;}
+  .hamburger span{display:block;width:26px;height:1.5px;background:var(--ivory);transition:transform .4s,opacity .4s,background .4s;}
+  #nav.scrolled .hamburger span{background:var(--charcoal);}
+  .hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+  .hamburger.open span:nth-child(2){opacity:0;}
+  .hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+  .mob-menu{
+    display:none;position:fixed;inset:0;z-index:999;
+    background:var(--rose-vdk);
+    flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+    opacity:0;pointer-events:none;transition:opacity .5s var(--ease);
+  }
+  .mob-menu.open{opacity:1;pointer-events:all;}
+  .mob-menu a{
+    font-family:var(--serif);font-size:clamp(1.8rem,5vw,2.8rem);
+    font-weight:300;color:var(--blush);transition:color .3s;
+  }
+  .mob-menu a:hover{color:var(--ivory);}
+
+  /* =============================================
+     HERO
+  ============================================= */
+  #hero{
+    position:relative;height:100svh;min-height:620px;
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute;inset:0;
+    background:linear-gradient(155deg,#6B2E2E 0%,#4A1F1F 35%,#2E1520 65%,#1A0E14 100%);
+  }
+  .hero-wash{
+    position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 65% 55% at 78% 18%,rgba(242,213,200,.20) 0%,transparent 60%),
+      radial-gradient(ellipse 45% 35% at 12% 78%,rgba(185,146,154,.22) 0%,transparent 55%);
+  }
+  .hero-img{
+    position:absolute;inset:0;
+    background-image:url('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=1600&q=80&auto=format&fit=crop');
+    background-size:cover;background-position:center 30%;
+    opacity:0;will-change:transform;
+    clip-path:inset(0 0 100% 0); /* start hidden — GSAP reveals */
+  }
+  /* Floating petals layer */
+  .petal-layer{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+  .fp{
+    position:absolute;border-radius:50% 0 50% 0;
+    background:rgba(242,213,200,.38);
+    animation:fpFloat linear infinite;
+  }
+  .fp:nth-child(1){width:13px;height:22px;left:7%;  animation-duration:10s;animation-delay:0s;}
+  .fp:nth-child(2){width:8px; height:14px;left:21%; animation-duration:13s;animation-delay:-3s;}
+  .fp:nth-child(3){width:15px;height:24px;left:43%; animation-duration:9s; animation-delay:-6s;}
+  .fp:nth-child(4){width:11px;height:18px;left:67%; animation-duration:11s;animation-delay:-2s;}
+  .fp:nth-child(5){width:17px;height:27px;left:84%; animation-duration:12s;animation-delay:-8s;}
+  .fp:nth-child(6){width:9px; height:15px;left:54%; animation-duration:14s;animation-delay:-4s;}
+  @keyframes fpFloat{
+    0%  {transform:translateY(110vh) rotate(0deg);  opacity:0;}
+    8%  {opacity:.7;}
+    92% {opacity:.5;}
+    100%{transform:translateY(-8vh)  rotate(380deg);opacity:0;}
+  }
+
+  .hero-content{
+    position:relative;z-index:2;
+    text-align:center;padding:0 5%;max-width:900px;
+  }
+  .hero-eyebrow{
+    font-family:var(--sans);font-size:.6rem;font-weight:400;
+    letter-spacing:.44em;text-transform:uppercase;
+    color:var(--blush);margin-bottom:1rem;opacity:0;
+  }
+  /* Script will be revealed as whole word */
+  .hero-script{
+    font-family:var(--script);
+    font-size:clamp(3.2rem,9vw,7rem);
+    color:var(--blush);line-height:1;
+    margin-bottom:.6rem;opacity:0;transform:scale(.85) translateY(20px);
+  }
+  /* Serif: split into chars in JS */
+  .hero-serif{
+    font-family:var(--serif);
+    font-size:clamp(1.2rem,2.8vw,2rem);
+    font-weight:300;letter-spacing:.14em;text-transform:uppercase;
+    color:rgba(253,240,235,.82);
+    margin-bottom:1.6rem;
+    overflow:hidden;/* chars slide up from here */
+    opacity:0; /* hidden until GSAP splits & animates */
+  }
+  .hero-serif .char{display:inline-block;}
+  .hero-serif .spc{display:inline-block;width:.35em;}
+  .hero-orn{
+    display:flex;align-items:center;justify-content:center;gap:1rem;
+    margin-bottom:1.6rem;opacity:0;
+  }
+  .orn-line{width:0;height:1px;background:linear-gradient(to right,transparent,var(--blush-mid));}
+  .orn-line.r{background:linear-gradient(to left,transparent,var(--blush-mid));}
+  .orn-icon{color:var(--blush-mid);font-size:.9rem;}
+  .hero-sub{
+    font-family:var(--sans);font-size:clamp(.78rem,1.4vw,.9rem);
+    color:rgba(253,240,235,.62);max-width:460px;
+    margin:0 auto 2.8rem;opacity:0;transform:translateY(14px);
+  }
+  .hero-btns{
+    display:flex;gap:1.2rem;align-items:center;
+    justify-content:center;flex-wrap:wrap;opacity:0;
+  }
+  .btn-rose{
+    font-family:var(--sans);font-size:.65rem;font-weight:400;
+    letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ivory);background:var(--rose);
+    padding:1rem 2.8rem;border:none;cursor:none;
+    transition:background .4s,box-shadow .4s;
+  }
+  .btn-rose:hover{background:var(--rose-dk);box-shadow:0 12px 32px rgba(196,123,120,.45);}
+  .btn-ghost{
+    font-family:var(--sans);font-size:.65rem;font-weight:400;
+    letter-spacing:.22em;text-transform:uppercase;
+    color:var(--blush);border:1px solid rgba(242,213,200,.38);
+    padding:1rem 2.8rem;cursor:none;
+    transition:border-color .4s,color .4s;
+  }
+  .btn-ghost:hover{border-color:var(--blush-mid);color:var(--blush-mid);}
+  .magnetic{display:inline-block;}/* wrap for magnetic effect */
+
+  .scroll-hint{
+    position:absolute;bottom:2.5rem;left:50%;
+    transform:translateX(-50%);z-index:2;
+    display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;
+  }
+  .scroll-line-el{
+    width:1px;height:50px;
+    background:linear-gradient(to bottom,var(--blush-mid),transparent);
+    animation:sh 2s ease-in-out infinite;
+  }
+  @keyframes sh{0%,100%{height:50px;opacity:1;}50%{height:30px;opacity:.5;}}
+  .scroll-label{font-family:var(--sans);font-size:.5rem;letter-spacing:.32em;text-transform:uppercase;color:rgba(242,213,200,.5);}
+
+  .hero-social{
+    position:absolute;left:2.5rem;top:50%;transform:translateY(-50%);
+    z-index:2;display:flex;flex-direction:column;align-items:center;gap:1.2rem;
+  }
+  .hero-social::before{content:'';display:block;width:1px;height:55px;background:linear-gradient(to bottom,transparent,var(--blush-mid));}
+  .hero-social a{
+    font-family:var(--sans);font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;
+    color:rgba(242,213,200,.4);writing-mode:vertical-rl;transition:color .3s;cursor:none;
+  }
+  .hero-social a:hover{color:var(--blush);}
+
+  /* marquee rimosso */
+
+  /* =============================================
+     SECTION COMMONS
+  ============================================= */
+  section{padding:9rem 5%;}
+  .s-label{font-family:var(--sans);font-size:.58rem;font-weight:400;letter-spacing:.4em;text-transform:uppercase;color:var(--rose);margin-bottom:.8rem;}
+  .s-script{font-family:var(--script);font-size:clamp(2rem,4.5vw,3rem);color:var(--rose);line-height:1;display:block;margin-bottom:.4rem;}
+  .s-title{font-family:var(--serif);font-size:clamp(1.9rem,4vw,3.2rem);font-weight:300;line-height:1.18;color:var(--charcoal);margin-bottom:1.2rem;}
+  .s-title em{font-style:italic;color:var(--rose);}
+  .s-body{font-family:var(--sans);font-size:.88rem;font-weight:300;color:var(--gray);line-height:1.9;max-width:520px;margin-bottom:2.2rem;}
+  .bot-sep{display:flex;align-items:center;gap:.8rem;margin:1.2rem 0;color:var(--blush-mid);opacity:.7;font-size:1rem;}
+  .bot-sep::before,.bot-sep::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,var(--blush-mid));}
+  .bot-sep::after{background:linear-gradient(to left,transparent,var(--blush-mid));}
+
+  /* =============================================
+     ABOUT
+  ============================================= */
+  #about{
+    background:var(--cream);
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:6rem;align-items:center;padding:9rem 5%;
+    position:relative;overflow:hidden;
+  }
+  #about::before{
+    content:'';position:absolute;right:-80px;top:-80px;
+    width:480px;height:480px;border-radius:50%;
+    background:radial-gradient(circle,rgba(242,213,200,.3) 0%,transparent 65%);
+    pointer-events:none;
+  }
+  .about-imgs{position:relative;height:580px;}
+  .about-img-main{
+    position:absolute;top:0;left:0;width:68%;height:73%;
+    object-fit:cover;
+    clip-path:inset(0 100% 0 0);/* start hidden, JS reveals */
+    box-shadow:16px 16px 50px rgba(92,45,45,.14);
+  }
+  .about-img-accent{
+    position:absolute;bottom:0;right:0;width:52%;height:52%;
+    object-fit:cover;
+    clip-path:inset(100% 0 0 0);/* start hidden */
+    box-shadow:-8px -8px 30px rgba(92,45,45,.09);
+    border:6px solid var(--ivory);
+  }
+  .about-badge{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%) scale(0);z-index:2;
+    width:108px;height:108px;border-radius:50%;
+    background:var(--rose);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15rem;
+    box-shadow:0 8px 28px rgba(155,82,82,.35);
+  }
+  .about-badge-num{font-family:var(--serif);font-size:2rem;font-weight:500;color:var(--ivory);line-height:1;}
+  .about-badge-txt{font-family:var(--sans);font-size:.46rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,252,248,.85);text-align:center;}
+  /* text side */
+  .about-text .s-body{max-width:100%;}
+  .about-sig{font-family:var(--script);font-size:2.8rem;color:var(--rose);margin-top:1rem;opacity:0;transform:translateX(-20px);}
+  .about-stats{display:flex;gap:3rem;margin-top:2.5rem;flex-wrap:wrap;}
+  .stat-num{font-family:var(--serif);font-size:2.2rem;font-weight:300;color:var(--charcoal);line-height:1;display:block;}
+  .stat-lbl{font-family:var(--sans);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gray);}
+  /* text reveals handled with .tx class */
+  .tx{opacity:0;transform:translateY(28px);}
+
+  /* =============================================
+     SERVICES
+  ============================================= */
+  #services{background:var(--ivory);padding:9rem 5%;text-align:center;}
+  .svc-intro{max-width:640px;margin:0 auto 5rem;}
+  .svc-intro .s-body{max-width:100%;margin:0 auto;}
+  .svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .svc-card{
+    position:relative;overflow:hidden;cursor:none;
+    aspect-ratio:4/3;display:flex;align-items:flex-end;
+    clip-path:inset(0 0 100% 0);/* hidden, JS reveals */
+  }
+  .svc-img{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;
+    transition:transform .9s var(--ease),filter .8s;
+    filter:brightness(.62) saturate(.85);
+  }
+  .svc-card:hover .svc-img{transform:scale(1.08);filter:brightness(.45) saturate(.7);}
+  .svc-overlay{
+    position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(46,21,21,.9) 0%,transparent 55%);
+    z-index:1;transition:background .5s;
+  }
+  .svc-card:hover .svc-overlay{background:linear-gradient(to top,rgba(46,21,21,.96) 0%,rgba(46,21,21,.3) 100%);}
+  /* Corner accent */
+  .svc-card::after{
+    content:'';position:absolute;top:0;right:0;
+    width:60px;height:60px;
+    border-top:1px solid rgba(242,213,200,.2);border-right:1px solid rgba(242,213,200,.2);
+    z-index:2;pointer-events:none;transition:width .4s,height .4s;
+  }
+  .svc-card:hover::after{width:85px;height:85px;}
+  .svc-content{position:relative;z-index:2;padding:2rem 2.5rem;text-align:left;width:100%;}
+  .svc-num{font-family:var(--sans);font-size:.54rem;font-weight:400;letter-spacing:.32em;text-transform:uppercase;color:var(--blush-mid);margin-bottom:.4rem;}
+  .svc-title{font-family:var(--serif);font-size:clamp(1.4rem,2.8vw,2rem);font-weight:300;color:var(--ivory);line-height:1.15;margin-bottom:.5rem;}
+  .svc-desc{
+    font-family:var(--sans);font-size:.78rem;font-weight:300;
+    color:rgba(253,240,235,.72);line-height:1.78;max-width:380px;
+    max-height:0;overflow:hidden;opacity:0;
+    transition:max-height .6s var(--ease),opacity .4s;
+  }
+  .svc-card:hover .svc-desc{max-height:100px;opacity:1;}
+  .svc-link{
+    display:inline-flex;align-items:center;gap:.5rem;
+    font-family:var(--sans);font-size:.6rem;font-weight:400;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--blush-mid);
+    margin-top:.9rem;max-height:0;overflow:hidden;opacity:0;cursor:none;
+    transition:max-height .5s var(--ease) .1s,opacity .4s .1s;
+  }
+  .svc-card:hover .svc-link{max-height:36px;opacity:1;}
+  .svc-link::after{content:'→';transition:transform .3s var(--ease);}
+  .svc-card:hover .svc-link::after{transform:translateX(4px);}
+
+  /* =============================================
+     PROCESS
+  ============================================= */
+  #process{
+    background:var(--petal);padding:9rem 5%;
+    position:relative;overflow:hidden;
+  }
+  #process::before{
+    content:'';position:absolute;left:-100px;bottom:-100px;
+    width:450px;height:450px;border-radius:50%;
+    background:radial-gradient(circle,rgba(196,123,120,.1) 0%,transparent 65%);
+    pointer-events:none;
+  }
+  .proc-header{text-align:center;max-width:580px;margin:0 auto 5rem;}
+  .proc-steps{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    gap:2.5rem;position:relative;
+  }
+  /* Animated connecting line */
+  .proc-line-bg{
+    position:absolute;top:1.88rem;left:12.5%;right:12.5%;
+    height:1px;background:rgba(222,188,176,.35);
+  }
+  .proc-line-fill{
+    position:absolute;top:1.88rem;left:12.5%;
+    height:1px;width:0;
+    background:linear-gradient(to right,var(--blush),var(--rose),var(--blush));
+    transform-origin:left center;
+  }
+  .proc-step{text-align:center;}
+  .step-icon{
+    width:58px;height:58px;border-radius:50%;
+    border:1px solid var(--blush-mid);
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 1.4rem;
+    font-family:var(--serif);font-size:1.2rem;color:var(--rose);font-style:italic;
+    background:var(--ivory);
+    transition:background .4s,transform .4s,color .4s;
+    opacity:0;transform:scale(0) rotate(-90deg);
+  }
+  .step-title{font-family:var(--serif);font-size:1.15rem;font-weight:300;color:var(--charcoal);margin-bottom:.65rem;opacity:0;transform:translateY(18px);}
+  .step-desc{font-family:var(--sans);font-size:.78rem;font-weight:300;color:var(--gray);line-height:1.85;opacity:0;transform:translateY(14px);}
+  .proc-step:hover .step-icon{background:var(--rose);color:var(--ivory);transform:scale(1.12) rotate(0deg)!important;}
+
+  /* =============================================
+     HORIZONTAL GALLERY
+  ============================================= */
+  #h-gallery{
+    position:relative;overflow:hidden;
+    background:var(--cream);
+    /* height set by JS pin */
+  }
+  .hg-header{
+    position:relative;z-index:2;
+    padding:5rem 5% 3rem;
+    display:flex;justify-content:space-between;align-items:flex-end;
+    flex-wrap:wrap;gap:1.5rem;
+  }
+  .hg-track-wrap{overflow:hidden;padding:0 0 5rem;}
+  .hg-track{
+    display:flex;gap:20px;
+    padding:0 5%;
+    will-change:transform;
+  }
+  .hg-card{
+    flex-shrink:0;width:400px;height:520px;
+    position:relative;overflow:hidden;
+    transform:scale(.85);opacity:.5;/* GSAP animates to scale(1) */
+  }
+  .hg-card img{
+    width:100%;height:100%;object-fit:cover;
+    transition:filter .6s;
+    filter:saturate(.85);
+  }
+  .hg-card:hover img{filter:saturate(1.05);}
+  .hg-caption{
+    position:absolute;bottom:0;left:0;right:0;
+    padding:2rem 1.8rem 1.8rem;
+    background:linear-gradient(to top,rgba(46,21,21,.82) 0%,transparent 100%);
+    transform:translateY(100%);transition:transform .5s var(--ease);
+  }
+  .hg-card:hover .hg-caption{transform:translateY(0);}
+  .hg-caption-tag{font-family:var(--sans);font-size:.55rem;letter-spacing:.28em;text-transform:uppercase;color:var(--blush-mid);margin-bottom:.4rem;}
+  .hg-caption-title{font-family:var(--serif);font-size:1.3rem;font-weight:300;font-style:italic;color:var(--ivory);}
+  /* Progress bar */
+  .hg-progress{
+    position:absolute;bottom:2.5rem;left:5%;right:5%;
+    height:1px;background:rgba(222,188,176,.25);
+    opacity:0;transition:opacity .3s;
+  }
+  .hg-progress-fill{
+    height:100%;width:0%;
+    background:linear-gradient(to right,var(--rose),var(--blush));
+    transition:width .05s linear;
+  }
+
+  /* =============================================
+     TESTIMONIALS
+  ============================================= */
+  #testimonials{background:var(--ivory);padding:9rem 5%;text-align:center;}
+  .tst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:4rem;}
+  .tst-card{
+    background:var(--petal);padding:2.5rem 2rem 2rem;
+    border-top:2px solid var(--blush-mid);text-align:left;
+    position:relative;overflow:hidden;
+    opacity:0;/* animated in */
+  }
+  .tst-card::after{content:'✿';position:absolute;bottom:-.5rem;right:1rem;font-size:3.5rem;color:var(--blush);line-height:1;pointer-events:none;}
+  .tst-stars{display:flex;gap:.18rem;margin-bottom:1rem;}
+  .star{color:var(--rose);font-size:.9rem;}
+  .tst-quote{font-family:var(--serif);font-size:1.02rem;font-weight:300;font-style:italic;color:var(--charcoal);line-height:1.72;margin-bottom:1.5rem;}
+  .tst-author{font-family:var(--sans);font-size:.66rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--gray);}
+  .tst-event{font-family:var(--sans);font-size:.62rem;font-weight:300;color:var(--rose);margin-top:.2rem;}
+
+  /* =============================================
+     CTA
+  ============================================= */
+  #cta{position:relative;padding:11rem 5%;overflow:hidden;text-align:center;}
+  .cta-bg{
+    position:absolute;inset:0;
+    background-image:url('https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1600&q=80&auto=format&fit=crop');
+    background-size:cover;background-position:center;will-change:transform;
+  }
+  .cta-ov{position:absolute;inset:0;background:linear-gradient(135deg,rgba(46,21,21,.9) 0%,rgba(75,35,35,.84) 100%);}
+  .cta-bar{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--blush-mid),var(--rose),var(--blush-mid),transparent);}
+  .cta-content{position:relative;z-index:2;max-width:720px;margin:0 auto;}
+  .cta-script{font-family:var(--script);font-size:2.8rem;color:var(--blush);margin-bottom:.8rem;opacity:0;transform:translateY(20px);}
+  /* CTA serif: split into words */
+  .cta-title{
+    font-family:var(--serif);font-size:clamp(2rem,5vw,3.8rem);
+    font-weight:300;color:var(--ivory);line-height:1.15;
+    margin-bottom:1.4rem;
+  }
+  .cta-title .word{display:inline-block;opacity:0;transform:translateY(40px);}
+  .cta-desc{font-family:var(--sans);font-size:.88rem;font-weight:300;color:rgba(253,240,235,.66);line-height:1.88;margin-bottom:3rem;opacity:0;transform:translateY(16px);}
+  .cta-btns{display:flex;gap:1.2rem;align-items:center;justify-content:center;flex-wrap:wrap;opacity:0;}
+
+  /* =============================================
+     CONTACT
+  ============================================= */
+  #contact{
+    background:var(--cream);padding:9rem 5%;
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:6rem;align-items:start;position:relative;overflow:hidden;
+  }
+  #contact::after{
+    content:'';position:absolute;right:-60px;bottom:-60px;
+    width:380px;height:380px;border-radius:50%;
+    background:radial-gradient(circle,rgba(242,213,200,.28) 0%,transparent 65%);
+    pointer-events:none;
+  }
+  .cnt-detail{display:flex;align-items:flex-start;gap:1rem;margin-top:2rem;opacity:0;transform:translateX(-20px);}
+  .cnt-icon{
+    width:42px;height:42px;border:1px solid var(--blush-mid);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;font-size:.95rem;color:var(--rose);
+  }
+  .cnt-lbl{font-family:var(--sans);font-size:.57rem;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--rose);margin-bottom:.2rem;}
+  .cnt-val{font-family:var(--sans);font-size:.88rem;font-weight:300;color:var(--charcoal);}
+  /* Form */
+  .cnt-form{display:flex;flex-direction:column;gap:1.4rem;opacity:0;transform:translateY(30px);}
+  .f-row{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;}
+  .f-grp{display:flex;flex-direction:column;gap:.45rem;}
+  .f-lbl{font-family:var(--sans);font-size:.57rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--gray);}
+  .f-inp,.f-sel,.f-ta{
+    font-family:var(--sans);font-size:.85rem;font-weight:300;
+    color:var(--charcoal);background:var(--ivory);
+    border:1px solid var(--blush-mid);padding:.9rem 1.1rem;
+    outline:none;width:100%;transition:border-color .4s;cursor:none;
+  }
+  .f-inp:focus,.f-sel:focus,.f-ta:focus{border-color:var(--rose);}
+  .f-inp::placeholder,.f-ta::placeholder{color:#c0aaaa;}
+  .f-ta{resize:vertical;min-height:130px;}
+  .f-sel{
+    appearance:none;cursor:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23C47B78' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 1.1rem center;
+  }
+  .f-sub{
+    font-family:var(--sans);font-size:.68rem;font-weight:400;
+    letter-spacing:.22em;text-transform:uppercase;
+    color:var(--ivory);background:var(--rose-dk);
+    border:none;padding:1.1rem 2.4rem;cursor:none;align-self:flex-start;
+    transition:background .4s,transform .3s;
+  }
+  .f-sub:hover{background:var(--rose);transform:translateY(-2px);}
+
+  /* =============================================
+     FOOTER
+  ============================================= */
+  footer{background:var(--charcoal);padding:5rem 5% 2.5rem;}
+  .ft-top{
+    display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
+    gap:4rem;padding-bottom:4rem;
+    border-bottom:1px solid rgba(242,213,200,.1);
+  }
+  .ft-logo{font-family:var(--script);font-size:2.8rem;color:var(--blush);margin-bottom:1rem;}
+  .ft-desc{font-family:var(--sans);font-size:.78rem;font-weight:300;color:rgba(253,240,235,.42);line-height:1.82;max-width:270px;}
+  .ft-socials{display:flex;gap:1rem;margin-top:2rem;}
+  .ft-soc{
+    width:36px;height:36px;border:1px solid rgba(242,213,200,.18);
+    display:flex;align-items:center;justify-content:center;
+    font-size:.72rem;color:rgba(253,240,235,.38);cursor:none;
+    transition:border-color .4s,color .4s,background .4s;
+  }
+  .ft-soc:hover{border-color:var(--blush-mid);color:var(--blush-mid);background:rgba(242,213,200,.07);}
+  .ft-col-ttl{font-family:var(--sans);font-size:.56rem;font-weight:400;letter-spacing:.28em;text-transform:uppercase;color:var(--blush-mid);margin-bottom:1.5rem;}
+  .ft-links{display:flex;flex-direction:column;gap:.8rem;}
+  .ft-links a{font-family:var(--sans);font-size:.8rem;font-weight:300;color:rgba(253,240,235,.42);transition:color .3s;cursor:none;}
+  .ft-links a:hover{color:var(--blush);}
+  .ft-ci{font-family:var(--sans);font-size:.78rem;font-weight:300;color:rgba(253,240,235,.42);margin-bottom:.75rem;}
+  .ft-ci strong{display:block;color:rgba(253,240,235,.68);font-weight:400;margin-bottom:.15rem;}
+  .ft-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:2.5rem;flex-wrap:wrap;gap:1rem;}
+  .ft-copy{font-family:var(--sans);font-size:.7rem;font-weight:300;color:rgba(253,240,235,.22);}
+  .ft-legal{display:flex;gap:2rem;}
+  .ft-legal a{font-family:var(--sans);font-size:.66rem;font-weight:300;color:rgba(253,240,235,.22);transition:color .3s;cursor:none;}
+  .ft-legal a:hover{color:var(--blush-mid);}
+
+  /* =============================================
+     BACK TO TOP
+  ============================================= */
+  #btt{
+    position:fixed;bottom:2rem;right:2rem;
+    width:46px;height:46px;background:var(--rose);border-radius:50%;
+    border:none;cursor:none;z-index:500;
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;transform:translateY(10px) scale(.8);
+    transition:opacity .4s,transform .4s,background .4s;
+  }
+  #btt.vis{opacity:1;pointer-events:all;transform:translateY(0) scale(1);}
+  #btt:hover{background:var(--rose-dk);}
+  #btt svg{width:15px;height:15px;stroke:var(--ivory);fill:none;stroke-width:2;}
+
+  /* =============================================
+     RESPONSIVE
+  ============================================= */
+  @media(max-width:1024px){
+    #about{grid-template-columns:1fr;gap:4rem;}
+    .about-imgs{height:400px;}
+    .svc-grid{grid-template-columns:1fr 1fr;}
+    .proc-steps{grid-template-columns:repeat(2,1fr);}
+    .proc-line-bg,.proc-line-fill{display:none;}
+    .tst-grid{grid-template-columns:1fr 1fr;}
+    .ft-top{grid-template-columns:1fr 1fr;gap:3rem;}
+    #contact{grid-template-columns:1fr;gap:4rem;}
+    .hg-card{width:320px;height:420px;}
+  }
+  @media(max-width:768px){
+    section{padding:5rem 5%;}
+    .nav-links{display:none;}.hamburger{display:flex;}.mob-menu{display:flex;}
+    .hero-social{display:none;}
+    .svc-grid{grid-template-columns:1fr;}
+    .svc-card{aspect-ratio:3/2;}
+    .tst-grid{grid-template-columns:1fr;}
+    .ft-top{grid-template-columns:1fr;gap:2.5rem;}
+    .f-row{grid-template-columns:1fr;}
+    .about-imgs{height:320px;}
+    .proc-steps{grid-template-columns:1fr 1fr;}
+    .hg-card{width:260px;height:340px;}
+    .cursor-ring,.cursor-dot{display:none;}
+    body{cursor:auto;}
+    a,button{cursor:pointer;}
+  }
+  @media(max-width:480px){
+    .hero-btns{flex-direction:column;width:100%;}
+    .btn-rose,.btn-ghost{width:100%;text-align:center;}
+    .proc-steps{grid-template-columns:1fr;}
+    .hg-card{width:80vw;height:55vw;}
+  }
+  </style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader" role="status" aria-label="Caricamento">
+  <div class="ldr-petals" aria-hidden="true">
+    <div class="ldr-p"></div><div class="ldr-p"></div>
+    <div class="ldr-p"></div><div class="ldr-p"></div><div class="ldr-p"></div>
+  </div>
+  <div class="ldr-ornament" aria-hidden="true">✿ · ✿ · ✿</div>
+  <div class="ldr-logo">Wedding Plane</div>
+  <div class="ldr-bar"></div>
+  <div class="ldr-sub">Wedding &amp; Event Planning</div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="nav" role="navigation" aria-label="Menu principale">
+  <a href="#" class="nav-logo">Wedding Plane</a>
+  <ul class="nav-links" role="list">
+    <li><a href="#about">Chi Siamo</a></li>
+    <li><a href="#services">Servizi</a></li>
+    <li><a href="#h-gallery">Gallery</a></li>
+    <li><a href="#testimonials">Testimonianze</a></li>
+    <li><a href="#contact" class="nav-cta">Contattaci</a></li>
+  </ul>
+  <button class="hamburger" aria-label="Apri menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mob-menu" role="dialog" aria-label="Menu mobile">
+  <a href="#about"        class="mml">Chi Siamo</a>
+  <a href="#services"     class="mml">Servizi</a>
+  <a href="#h-gallery"    class="mml">Gallery</a>
+  <a href="#testimonials" class="mml">Testimonianze</a>
+  <a href="#contact"      class="mml">Contattaci</a>
+</div>
+
+<!-- HERO -->
+<section id="hero" aria-label="Hero principale">
+  <div class="hero-bg"></div>
+  <div class="hero-wash" aria-hidden="true"></div>
+  <div class="hero-img"  aria-hidden="true"></div>
+  <div class="petal-layer" aria-hidden="true">
+    <div class="fp"></div><div class="fp"></div><div class="fp"></div>
+    <div class="fp"></div><div class="fp"></div><div class="fp"></div>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Wedding &amp; Event Planning</p>
+    <h1 class="hero-script">Wedding Plane</h1>
+    <p class="hero-serif" aria-label="Dove ogni sogno diventa realtà">Dove ogni sogno diventa realtà</p>
+    <div class="hero-orn" aria-hidden="true">
+      <span class="orn-line"></span>
+      <span class="orn-icon">✦</span>
+      <span class="orn-line r"></span>
+    </div>
+    <p class="hero-sub">Trasformiamo i momenti più preziosi della tua vita in esperienze indimenticabili, curate con passione e cura artigianale.</p>
+    <div class="hero-btns">
+      <span class="magnetic"><a href="#services" class="btn-rose">Scopri i Servizi</a></span>
+      <span class="magnetic"><a href="#contact"  class="btn-ghost">Inizia il progetto</a></span>
+    </div>
+  </div>
+  <div class="hero-social" aria-hidden="true">
+    <a href="#" tabindex="-1">Instagram</a>
+    <a href="#" tabindex="-1">Facebook</a>
+  </div>
+  <div class="scroll-hint" aria-hidden="true">
+    <div class="scroll-line-el"></div>
+    <span class="scroll-label">Scroll</span>
+  </div>
+</section>
+
+
+<!-- ABOUT -->
+<section id="about" aria-labelledby="about-ttl">
+  <div class="about-imgs">
+    <img class="about-img-main"
+         src="https://images.unsplash.com/photo-1529636798458-92182e662485?w=800&q=80&auto=format&fit=crop"
+         alt="Matrimonio curato da Wedding Plane" loading="lazy"/>
+    <img class="about-img-accent"
+         src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&q=80&auto=format&fit=crop"
+         alt="Dettagli floreali evento" loading="lazy"/>
+    <div class="about-badge">
+      <span class="about-badge-num">10+</span>
+      <span class="about-badge-txt">Anni di<br/>Esperienza</span>
+    </div>
+  </div>
+  <div class="about-text">
+    <p class="s-label tx">Il nostro Brand</p>
+    <span class="s-script tx">La nostra storia</span>
+    <h2 class="s-title tx" id="about-ttl">Ogni evento racconta<br/><em>una storia unica.</em></h2>
+    <div class="bot-sep tx">✿</div>
+    <p class="s-body tx">Wedding Plane nasce dalla passione per la bellezza, i dettagli e le emozioni autentiche. Siamo un team di event planner con oltre 10 anni di esperienza nella creazione di eventi esclusivi su misura — matrimoni, proposte romantiche, eventi aziendali e celebrazioni private.</p>
+    <p class="s-body tx" style="margin-top:-1rem;">Ogni progetto è per noi un'opera d'arte: ascoltiamo, immaginiamo e realizziamo il vostro sogno con cura artigianale, coordinando ogni singolo dettaglio affinché il giorno più importante superi ogni aspettativa.</p>
+    <div class="about-sig">Wedding Plane</div>
+    <div class="about-stats">
+      <div><span class="stat-num" data-target="350" data-suf="+">0+</span><span class="stat-lbl">Eventi realizzati</span></div>
+      <div><span class="stat-num" data-target="98"  data-suf="%">0%</span><span class="stat-lbl">Clienti soddisfatti</span></div>
+      <div><span class="stat-num" data-target="12"  data-suf="">0</span><span class="stat-lbl">Premi vinti</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" aria-labelledby="svc-ttl">
+  <div class="svc-intro">
+    <p class="s-label tx">I Nostri Servizi</p>
+    <span class="s-script tx">Con amore e dedizione</span>
+    <h2 class="s-title tx" id="svc-ttl">Creiamo esperienze<br/><em>senza tempo</em></h2>
+    <div class="bot-sep tx">❀</div>
+    <p class="s-body tx">Dalla prima consulenza all'ultimo petalo, gestiamo ogni aspetto del tuo evento con dedizione assoluta. Quattro servizi, un'unica promessa: perfezione.</p>
+  </div>
+  <div class="svc-grid">
+    <div class="svc-card" tabindex="0" role="article" aria-label="Wedding Planner">
+      <img class="svc-img" src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=900&q=80&auto=format&fit=crop" alt="Matrimonio romantico" loading="lazy"/>
+      <div class="svc-overlay"></div>
+      <div class="svc-content">
+        <p class="svc-num">01 — Wedding Planner</p>
+        <h3 class="svc-title">Matrimoni<br/>su Misura</h3>
+        <p class="svc-desc">Con passione e dedizione trasformiamo la vostra visione in una realtà indimenticabile. Dall'allestimento alla scelta floreale, ogni dettaglio riflette la vostra storia d'amore.</p>
+        <a href="#contact" class="svc-link">Scopri di più</a>
+      </div>
+    </div>
+    <div class="svc-card" tabindex="0" role="article" aria-label="Proposta di Matrimonio">
+      <img class="svc-img" src="https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=900&q=80&auto=format&fit=crop" alt="Proposta romantica" loading="lazy"/>
+      <div class="svc-overlay"></div>
+      <div class="svc-content">
+        <p class="svc-num">02 — Proposta Romantica</p>
+        <h3 class="svc-title">Dillo con<br/>i Petali</h3>
+        <p class="svc-desc">Mentre custodisci l'anello, noi daremo vita alla proposta più romantica che tu riesca ad immaginare. Ogni luce, ogni fiore pensata per quel momento.</p>
+        <a href="#contact" class="svc-link">Scopri di più</a>
+      </div>
+    </div>
+    <div class="svc-card" tabindex="0" role="article" aria-label="Business Events">
+      <img class="svc-img" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&q=80&auto=format&fit=crop" alt="Evento aziendale" loading="lazy"/>
+      <div class="svc-overlay"></div>
+      <div class="svc-content">
+        <p class="svc-num">03 — Business Events</p>
+        <h3 class="svc-title">Il Tuo Business<br/>al Centro</h3>
+        <p class="svc-desc">Dal lancio di prodotto al corporate dinner, eventi aziendali che elevano il tuo brand e creano connessioni autentiche con eleganza e precisione.</p>
+        <a href="#contact" class="svc-link">Scopri di più</a>
+      </div>
+    </div>
+    <div class="svc-card" tabindex="0" role="article" aria-label="Party a Tema">
+      <img class="svc-img" src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=900&q=80&auto=format&fit=crop" alt="Party a tema" loading="lazy"/>
+      <div class="svc-overlay"></div>
+      <div class="svc-content">
+        <p class="svc-num">04 — Party a Tema</p>
+        <h3 class="svc-title">Celebra nel<br/>Migliore dei Modi</h3>
+        <p class="svc-desc">Baby shower, battesimi, 18 anni, anniversari. Ogni festeggiato merita una festa indimenticabile, senza stress e piena di gioia.</p>
+        <a href="#contact" class="svc-link">Scopri di più</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process" aria-labelledby="proc-ttl">
+  <div class="proc-header">
+    <p class="s-label tx">Il Nostro Metodo</p>
+    <span class="s-script tx" style="color:var(--rose);">Come lavoriamo</span>
+    <h2 class="s-title tx" id="proc-ttl">Come realizziamo<br/>il tuo <em>sogno</em></h2>
+  </div>
+  <div class="proc-steps">
+    <div class="proc-line-bg" aria-hidden="true"></div>
+    <div class="proc-line-fill" aria-hidden="true"></div>
+    <div class="proc-step">
+      <div class="step-icon">I</div>
+      <h3 class="step-title">Ascolto &amp; Visione</h3>
+      <p class="step-desc">Ogni progetto inizia da te. Ascoltiamo i tuoi sogni, i tuoi colori, la tua storia per capire cosa renderà il tuo evento unico.</p>
+    </div>
+    <div class="proc-step">
+      <div class="step-icon">II</div>
+      <h3 class="step-title">Concept &amp; Design</h3>
+      <p class="step-desc">Creiamo un concept visivo su misura: palette floreale, allestimento, atmosfera. Ogni elemento è scelto con cura poetica.</p>
+    </div>
+    <div class="proc-step">
+      <div class="step-icon">III</div>
+      <h3 class="step-title">Coordinamento</h3>
+      <p class="step-desc">Gestiamo fornitori, tempistiche e ogni dettaglio. Sei libero di vivere le emozioni: alla logistica pensiamo noi.</p>
+    </div>
+    <div class="proc-step">
+      <div class="step-icon">IV</div>
+      <h3 class="step-title">Il Giorno Perfetto</h3>
+      <p class="step-desc">Siamo al tuo fianco dall'alba all'ultimo ballo. Il tuo evento sarà esattamente come lo hai sognato — o ancora più bello.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HORIZONTAL GALLERY -->
+<div id="h-gallery" aria-label="Gallery eventi">
+  <div class="hg-header">
+    <div>
+      <p class="s-label tx">I Nostri Momenti</p>
+      <h2 class="s-title tx">Gallery <em>Floreale</em></h2>
+    </div>
+    <span class="magnetic"><a href="#contact" class="btn-rose tx" style="font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;padding:.85rem 2rem;display:inline-block;">Richiedi Preventivo</a></span>
+  </div>
+  <div class="hg-track-wrap">
+    <div class="hg-track">
+      <div class="hg-card">
+        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80&auto=format&fit=crop" alt="Matrimonio in villa" loading="lazy"/>
+        <div class="hg-caption"><p class="hg-caption-tag">Wedding</p><p class="hg-caption-title">Villa dei Sogni</p></div>
+      </div>
+      <div class="hg-card">
+        <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=800&q=80&auto=format&fit=crop" alt="Fiori matrimonio" loading="lazy"/>
+        <div class="hg-caption"><p class="hg-caption-tag">Floral Design</p><p class="hg-caption-title">Rose &amp; Peonie</p></div>
+      </div>
+      <div class="hg-card">
+        <img src="https://images.unsplash.com/photo-1529636798458-92182e662485?w=800&q=80&auto=format&fit=crop" alt="Sposi al tramonto" loading="lazy"/>
+        <div class="hg-caption"><p class="hg-caption-tag">Wedding</p><p class="hg-caption-title">Tramonto d'Amore</p></div>
+      </div>
+      <div class="hg-card">
+        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80&auto=format&fit=crop" alt="Business event" loading="lazy"/>
+        <div class="hg-caption"><p class="hg-caption-tag">Business Event</p><p class="hg-caption-title">Gala Aziendale</p></div>
+      </div>
+      <div class="hg-card">
+        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&q=80&auto=format&fit=crop" alt="Torta nuziale" loading="lazy"/>
+        <div class="hg-caption"><p class="hg-caption-tag">Dettagli</p><p class="hg-caption-title">Dolci Emozioni</p></div>
+      </div>
+      <div class="hg-card">
+        <img src="https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=800&q=80&auto=format&fit=crop" alt="Proposta" loading="lazy"/>
+        <div class="hg-caption"><p class="hg-caption-tag">Proposta</p><p class="hg-caption-title">Il Grande Sì</p></div>
+      </div>
+      <div class="hg-card">
+        <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&q=80&auto=format&fit=crop" alt="Party a tema" loading="lazy"/>
+        <div class="hg-caption"><p class="hg-caption-tag">Party</p><p class="hg-caption-title">Notte di Stelle</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="hg-progress" aria-hidden="true"><div class="hg-progress-fill"></div></div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" aria-labelledby="tst-ttl">
+  <p class="s-label tx">Cosa Dicono di Noi</p>
+  <span class="s-script tx" style="color:var(--rose);">Voci dal cuore</span>
+  <h2 class="s-title tx" id="tst-ttl">Le parole dei nostri<br/><em>sposi felici</em></h2>
+  <div class="tst-grid">
+    <div class="tst-card">
+      <div class="tst-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <blockquote class="tst-quote">"Wedding Plane ha trasformato il nostro matrimonio in una favola. Ogni dettaglio era curato alla perfezione. Non avremmo potuto scegliere un team migliore."</blockquote>
+      <p class="tst-author">Marco &amp; Giulia R.</p>
+      <p class="tst-event">Matrimonio in Villa, Giugno 2025</p>
+    </div>
+    <div class="tst-card">
+      <div class="tst-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <blockquote class="tst-quote">"La proposta di matrimonio è stata magica. Lei ha detto sì tra le lacrime di gioia. Un sogno diventato realtà grazie a loro."</blockquote>
+      <p class="tst-author">Alessandro B.</p>
+      <p class="tst-event">Proposta Romantica, Febbraio 2025</p>
+    </div>
+    <div class="tst-card">
+      <div class="tst-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      <blockquote class="tst-quote">"Il nostro evento aziendale è stato impeccabile. Professional, creative, on-budget. Wedding Plane ha superato ogni aspettativa del nostro team."</blockquote>
+      <p class="tst-author">Sofia M., CEO Lumina Brand</p>
+      <p class="tst-event">Business Event, Novembre 2024</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta" aria-labelledby="cta-ttl">
+  <div class="cta-bg" aria-hidden="true"></div>
+  <div class="cta-ov"  aria-hidden="true"></div>
+  <div class="cta-bar" aria-hidden="true"></div>
+  <div class="cta-content">
+    <p class="cta-script">Il Tuo Giorno Speciale</p>
+    <h2 class="cta-title" id="cta-ttl">
+      <span class="word">Pronti</span> <span class="word">a</span> <span class="word">creare</span><br/>
+      <span class="word">qualcosa</span> <span class="word">di</span> <span class="word">straordinario?</span>
+    </h2>
+    <p class="cta-desc">Contattaci per una consulenza gratuita e scopri come possiamo trasformare la tua visione in un evento che rimarrà nel cuore di tutti per sempre.</p>
+    <div class="cta-btns">
+      <span class="magnetic"><a href="#contact" class="btn-rose">Prenota una Consulenza</a></span>
+      <span class="magnetic"><a href="mailto:info@weddingplane.it" class="btn-ghost">Scrivici una Email</a></span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" aria-labelledby="cnt-ttl">
+  <div class="contact-info">
+    <p class="s-label tx">Contattaci</p>
+    <span class="s-script tx" style="color:var(--rose);">Parliamo insieme</span>
+    <h2 class="s-title tx" id="cnt-ttl">Inizia il tuo<br/><em>viaggio con noi</em></h2>
+    <div class="bot-sep tx">✿</div>
+    <p class="s-body tx">Siamo qui per ascoltarti. Raccontaci il tuo sogno e iniziamo insieme a costruirlo. Ogni grande evento parte da una semplice, bella conversazione.</p>
+    <div class="cnt-detail"><div class="cnt-icon">✉</div><div><p class="cnt-lbl">Email</p><p class="cnt-val"><a href="mailto:info@weddingplane.it">info@weddingplane.it</a></p></div></div>
+    <div class="cnt-detail"><div class="cnt-icon">✆</div><div><p class="cnt-lbl">Telefono</p><p class="cnt-val"><a href="tel:+390612345678">+39 061 234 5678</a></p></div></div>
+    <div class="cnt-detail"><div class="cnt-icon">◎</div><div><p class="cnt-lbl">Studio</p><p class="cnt-val">Roma &amp; dintorni — Italia</p></div></div>
+  </div>
+  <form class="cnt-form" action="#" method="post" novalidate aria-label="Modulo di contatto">
+    <div class="f-row">
+      <div class="f-grp"><label class="f-lbl" for="fn">Nome *</label><input class="f-inp" type="text"  id="fn" name="fn" placeholder="Il tuo nome" required/></div>
+      <div class="f-grp"><label class="f-lbl" for="fe">Email *</label><input class="f-inp" type="email" id="fe" name="fe" placeholder="tua@email.it"  required/></div>
+    </div>
+    <div class="f-grp">
+      <label class="f-lbl" for="fs">Tipo di Evento</label>
+      <select class="f-sel" id="fs" name="fs">
+        <option value="">Seleziona un servizio…</option>
+        <option>Wedding Planner</option>
+        <option>Proposta di Matrimonio</option>
+        <option>Business Event</option>
+        <option>Party a Tema</option>
+      </select>
+    </div>
+    <div class="f-grp"><label class="f-lbl" for="fd">Data Evento (indicativa)</label><input class="f-inp" type="text" id="fd" name="fd" placeholder="es. Settembre 2026"/></div>
+    <div class="f-grp"><label class="f-lbl" for="fm">Il tuo sogno *</label><textarea class="f-ta" id="fm" name="fm" placeholder="Raccontaci la tua visione…" required></textarea></div>
+    <button type="submit" class="f-sub">Invia il Messaggio ✦</button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-top">
+    <div>
+      <div class="ft-logo">Wedding Plane</div>
+      <p class="ft-desc">Wedding &amp; Event Planning romantico e su misura. Trasformiamo i momenti più importanti della tua vita in ricordi senza tempo.</p>
+      <div class="ft-socials">
+        <a href="#" class="ft-soc" aria-label="Instagram">in</a>
+        <a href="#" class="ft-soc" aria-label="Facebook">fb</a>
+        <a href="#" class="ft-soc" aria-label="Pinterest">pt</a>
+        <a href="#" class="ft-soc" aria-label="TikTok">tk</a>
+      </div>
+    </div>
+    <div><p class="ft-col-ttl">Servizi</p><ul class="ft-links"><li><a href="#services">Wedding Planner</a></li><li><a href="#services">Proposta di Matrimonio</a></li><li><a href="#services">Business Events</a></li><li><a href="#services">Party a Tema</a></li></ul></div>
+    <div><p class="ft-col-ttl">Navigazione</p><ul class="ft-links"><li><a href="#about">Chi Siamo</a></li><li><a href="#h-gallery">Gallery</a></li><li><a href="#testimonials">Testimonianze</a></li><li><a href="#contact">Contatti</a></li></ul></div>
+    <div>
+      <p class="ft-col-ttl">Contatti</p>
+      <div class="ft-ci"><strong>Email</strong>info@weddingplane.it</div>
+      <div class="ft-ci"><strong>Telefono</strong>+39 061 234 5678</div>
+      <div class="ft-ci"><strong>Location</strong>Roma &amp; dintorni, Italia</div>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <p class="ft-copy">© 2026 Wedding Plane. Tutti i diritti riservati. Con amore ✿</p>
+    <nav class="ft-legal"><a href="#">Privacy Policy</a><a href="#">Cookie Policy</a><a href="#">Termini</a></nav>
+  </div>
+</footer>
+
+<button id="btt" aria-label="Torna in cima">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
+
+<!-- ===================================================
+     SCRIPTS
+=================================================== -->
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* =============================================
+   UTILITY: text splitter
+============================================= */
+function splitChars(el) {
+  const txt = el.getAttribute('aria-label') || el.textContent;
+  let html = '';
+  for (let i = 0; i < txt.length; i++) {
+    if (txt[i] === ' ') html += '<span class="spc"> </span>';
+    else html += `<span class="char" style="display:inline-block;">${txt[i]}</span>`;
+  }
+  el.innerHTML = html;
+  return el.querySelectorAll('.char');
+}
+
+/* cursore: freccia rosa nativa via CSS — nessun JS necessario */
+
+/* =============================================
+   LOADER
+============================================= */
+const loader = document.getElementById('loader');
+
+gsap.timeline()
+  .to('.ldr-ornament', { opacity:1, duration:.6, ease:'power2.out' }, .2)
+  .to('.ldr-logo',     { opacity:1, y:0, scale:1, duration:1.1, ease:'power3.out' }, .5)
+  .to('.ldr-bar',      { width:130, duration:1,   ease:'power2.inOut' }, .9)
+  .to('.ldr-sub',      { opacity:1, duration:.6,  ease:'power2.out' }, 1.4);
+
+setTimeout(() => {
+  gsap.to(loader, {
+    yPercent: -100, duration: 1, ease: 'power4.inOut',
+    onComplete() {
+      loader.style.display = 'none';
+      initHero();
+    }
+  });
+}, 2600);
+
+/* =============================================
+   HERO
+============================================= */
+function initHero() {
+  /* Split serif chars — make wrapper visible first so overflow:hidden works */
+  const serifEl = document.querySelector('.hero-serif');
+  const chars   = splitChars(serifEl);
+  serifEl.style.opacity = '1'; // reveal container; chars start at y:120% so still invisible
+
+  /* Image: from state already set in CSS (clip-path + opacity:0), just animate to visible */
+  gsap.to('.hero-img', { clipPath:'inset(0 0 0% 0)', opacity:.22, duration:1.6, ease:'power4.inOut', delay:.1 });
+
+  const tl = gsap.timeline({ defaults:{ ease:'power3.out' } });
+  tl.to('.hero-eyebrow', { opacity:1, y:0,           duration:.8 }, .2)
+    .to('.hero-script',  { opacity:1, scale:1, y:0,  duration:1.2, ease:'back.out(1.4)' }, .35)
+    .from(chars,         { y:'120%',  duration:.9,   stagger:.04, ease:'power4.out' }, .9)
+    .to('.hero-orn',     { opacity:1, duration:.7 }, 1.3)
+    .to('.orn-line',     { width:60,  duration:.8,   ease:'power2.out', stagger:.1 }, 1.3)
+    .to('.hero-sub',     { opacity:1, y:0,           duration:.8 }, 1.5)
+    .to('.hero-btns',    { opacity:1,                duration:.8 }, 1.7)
+    .to('.scroll-hint',  { opacity:1, duration:.6 }, 2.2);
+}
+
+/* =============================================
+   NAVBAR
+============================================= */
+const nav = document.getElementById('nav');
+const btt = document.getElementById('btt');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+  btt.classList.toggle('vis', window.scrollY > 400);
+}, { passive:true });
+btt.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+
+/* =============================================
+   PARALLAX
+============================================= */
+gsap.to('.hero-img', {
+  yPercent:30, ease:'none',
+  scrollTrigger:{ trigger:'#hero', start:'top top', end:'bottom top', scrub:true }
+});
+gsap.to('.cta-bg', {
+  yPercent:22, ease:'none',
+  scrollTrigger:{ trigger:'#cta', start:'top bottom', end:'bottom top', scrub:true }
+});
+gsap.to('.about-img-main', {
+  yPercent:-8, ease:'none',
+  scrollTrigger:{ trigger:'#about', start:'top bottom', end:'bottom top', scrub:true }
+});
+gsap.to('.about-img-accent', {
+  yPercent:6, ease:'none',
+  scrollTrigger:{ trigger:'#about', start:'top bottom', end:'bottom top', scrub:true }
+});
+
+/* =============================================
+   ABOUT — clip-path image reveals
+============================================= */
+ScrollTrigger.create({
+  trigger:'#about', start:'top 70%',
+  onEnter() {
+    gsap.to('.about-img-main',
+      { clipPath:'inset(0 0% 0 0)', duration:1.4, ease:'power4.inOut' }
+    );
+    gsap.to('.about-img-accent',
+      { clipPath:'inset(0% 0 0 0)', duration:1.4, ease:'power4.inOut', delay:.3 }
+    );
+    gsap.to('.about-badge',
+      { scale:1, duration:.9, ease:'back.out(1.6)', delay:.8 }
+    );
+    gsap.to('.about-sig',
+      { opacity:1, x:0, duration:1, ease:'power3.out', delay:.6 }
+    );
+  },
+  once:true
+});
+
+/* =============================================
+   SERVICES — clip-path reveal per card
+============================================= */
+gsap.utils.toArray('.svc-card').forEach((card, i) => {
+  gsap.to(card, {
+    clipPath:'inset(0 0 0% 0)',
+    duration:1.1,
+    ease:'power4.inOut',
+    delay: i * 0.14,
+    scrollTrigger:{ trigger:'.svc-grid', start:'top 78%', once:true }
+  });
+});
+
+/* =============================================
+   PROCESS — line draw + step reveal
+============================================= */
+/* Line draw on scrub */
+gsap.to('.proc-line-fill', {
+  width: () => document.querySelector('.proc-line-bg').offsetWidth,
+  ease:'none',
+  scrollTrigger:{
+    trigger:'.proc-steps', start:'top 72%', end:'bottom 60%', scrub:1
+  }
+});
+
+/* Icons: scale + rotate in */
+gsap.utils.toArray('.step-icon').forEach((icon, i) => {
+  gsap.to(icon, {
+    opacity:1, scale:1, rotation:0,
+    duration:.8, delay: i * 0.2,
+    ease:'back.out(1.7)',
+    scrollTrigger:{ trigger:'.proc-steps', start:'top 75%', once:true }
+  });
+});
+/* Titles + descs */
+gsap.utils.toArray('.step-title').forEach((el, i) => {
+  gsap.to(el, { opacity:1, y:0, duration:.7, delay: i*.18 + .3, ease:'power3.out',
+    scrollTrigger:{ trigger:'.proc-steps', start:'top 75%', once:true } });
+});
+gsap.utils.toArray('.step-desc').forEach((el, i) => {
+  gsap.to(el, { opacity:1, y:0, duration:.7, delay: i*.18 + .5, ease:'power3.out',
+    scrollTrigger:{ trigger:'.proc-steps', start:'top 75%', once:true } });
+});
+
+/* =============================================
+   .tx REVEALS
+============================================= */
+document.querySelectorAll('.tx').forEach(el => {
+  const parent   = el.parentElement;
+  const siblings = [...parent.querySelectorAll('.tx')];
+  const idx      = siblings.indexOf(el);
+  gsap.to(el, {
+    opacity:1, y:0, duration:.9, delay: idx * .12, ease:'power3.out',
+    scrollTrigger:{ trigger:el, start:'top 87%', toggleActions:'play none none none' }
+  });
+});
+
+/* =============================================
+   HORIZONTAL GALLERY
+============================================= */
+(function initHGallery() {
+  const wrap  = document.querySelector('.hg-track-wrap');
+  const track = document.querySelector('.hg-track');
+  const cards = gsap.utils.toArray('.hg-card');
+  const progFill = document.querySelector('.hg-progress-fill');
+  const prog     = document.querySelector('.hg-progress');
+
+  /* Skip on very small screens */
+  if (window.innerWidth < 600) return;
+
+  const getTravel = () => track.scrollWidth - wrap.offsetWidth;
+
+  const hST = gsap.to(track, {
+    x: () => -getTravel(),
+    ease:'none',
+    scrollTrigger:{
+      trigger:'#h-gallery',
+      pin:true,
+      scrub:1.2,
+      end: () => `+=${getTravel()}`,
+      invalidateOnRefresh:true,
+      onUpdate(self) {
+        if (prog) {
+          prog.style.opacity = '1';
+          progFill.style.width = (self.progress * 100) + '%';
+        }
+      }
+    }
+  }).scrollTrigger;
+
+  /* Scale each card as it crosses center */
+  cards.forEach(card => {
+    gsap.fromTo(card,
+      { scale:.84, opacity:.5 },
+      {
+        scale:1, opacity:1, ease:'none',
+        scrollTrigger:{
+          trigger:card,
+          containerAnimation:hST,
+          start:'left 85%',
+          end:'left 35%',
+          scrub:true
+        }
+      }
+    );
+  });
+})();
+
+/* =============================================
+   TESTIMONIALS — alternating slide in
+============================================= */
+gsap.utils.toArray('.tst-card').forEach((card, i) => {
+  gsap.fromTo(card,
+    { opacity:0, x: i % 2 === 0 ? -60 : 60, y:20 },
+    {
+      opacity:1, x:0, y:0,
+      duration:1, ease:'power3.out',
+      scrollTrigger:{ trigger:card, start:'top 84%', once:true }
+    }
+  );
+});
+
+/* =============================================
+   CTA — text reveals
+============================================= */
+ScrollTrigger.create({
+  trigger:'#cta', start:'top 70%', once:true,
+  onEnter() {
+    gsap.to('.cta-script', { opacity:1, y:0, duration:.9, ease:'power3.out' });
+    gsap.to('.cta-title .word', {
+      opacity:1, y:0, duration:.9, stagger:.1, ease:'power3.out', delay:.2
+    });
+    gsap.to('.cta-desc',  { opacity:1, y:0, duration:.8, ease:'power3.out', delay:.8 });
+    gsap.to('.cta-btns',  { opacity:1,       duration:.8, ease:'power3.out', delay:1.1 });
+  }
+});
+
+/* =============================================
+   CONTACT — reveals
+============================================= */
+ScrollTrigger.create({
+  trigger:'#contact', start:'top 72%', once:true,
+  onEnter() {
+    gsap.to('.cnt-detail', { opacity:1, x:0, duration:.8, stagger:.15, ease:'power3.out' });
+    gsap.to('.cnt-form',   { opacity:1, y:0, duration:1,  ease:'power3.out', delay:.3 });
+  }
+});
+
+/* =============================================
+   COUNTERS
+============================================= */
+document.querySelectorAll('.stat-num').forEach(el => {
+  const target = parseInt(el.dataset.target);
+  const suf    = el.dataset.suf;
+  gsap.fromTo({ val:0 }, { val:target },{
+    duration:2.2, ease:'power2.out',
+    onUpdate() { el.textContent = Math.round(this.targets()[0].val) + suf; },
+    scrollTrigger:{ trigger:el, start:'top 85%', once:true }
+  });
+});
+
+/* =============================================
+   MAGNETIC BUTTONS
+============================================= */
+document.querySelectorAll('.magnetic').forEach(wrap => {
+  const inner = wrap.querySelector('a,button');
+  if (!inner) return;
+  wrap.addEventListener('mousemove', e => {
+    const r = wrap.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width  / 2;
+    const y = e.clientY - r.top  - r.height / 2;
+    gsap.to(inner, { x: x * .3, y: y * .3, duration:.4, ease:'power2.out' });
+  });
+  wrap.addEventListener('mouseleave', () => {
+    gsap.to(inner, { x:0, y:0, duration:.7, ease:'elastic.out(1,.5)' });
+  });
+});
+
+/* =============================================
+   MOBILE MENU
+============================================= */
+const hamburger = document.querySelector('.hamburger');
+const mobMenu   = document.querySelector('.mob-menu');
+hamburger.addEventListener('click', () => {
+  const open = hamburger.classList.toggle('open');
+  mobMenu.classList.toggle('open', open);
+  hamburger.setAttribute('aria-expanded', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+});
+document.querySelectorAll('.mml').forEach(l => {
+  l.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobMenu.classList.remove('open');
+    hamburger.setAttribute('aria-expanded','false');
+    document.body.style.overflow = '';
+  });
+});
+
+/* =============================================
+   SERVICE CARD KEYBOARD
+============================================= */
+document.querySelectorAll('.svc-card').forEach(card => {
+  card.addEventListener('keydown', e => {
+    if (e.key==='Enter'||e.key===' ') card.querySelector('.svc-link')?.click();
+  });
+});
+
+/* =============================================
+   FORM
+============================================= */
+document.querySelector('.cnt-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const btn = e.target.querySelector('.f-sub');
+  btn.textContent = 'Inviato con amore ✿';
+  btn.style.background = 'var(--sage)';
+  setTimeout(() => {
+    btn.textContent = 'Invia il Messaggio ✦';
+    btn.style.background = '';
+    e.target.reset();
+  }, 3500);
+});
+</script>
+</body>
+</html>
